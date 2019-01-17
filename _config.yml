@@ -4,7 +4,7 @@ SEOTitle: 阿彪的博客
 header-img: img/post-bg-desk.jpg
 email: mabiao020@gmail.com
 description: "This Is Good Day , NIce"
-keyword: "BY, BY Blog, 阿彪的博客, abiao, 阿彪, java, spring, springboot"
+keyword: "阿彪的博客, abiao, 阿彪, java, spring, springboot"
 url: "http://biaomaxiao.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/biaomaxiao/biaomaxiao.github.io.git" # you code repository
@@ -74,10 +74,10 @@ gitalk:
 
 # Analytics settings
 # Baidu Analytics
-ba_track_id: b50bf2b12b5338a1845e33832976fd68
+#ba_track_id: b50bf2b12b5338a1845e33832976fd68
 
 # Google Analytics
-ga_track_id: 'UA-90855596-1'            # Format: UA-xxxxxx-xx
+ga_track_id: 'UA-132665243-1'            # Format: UA-xxxxxx-xx
 ga_domain: abiao.club               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
 
 
