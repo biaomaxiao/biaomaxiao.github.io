@@ -27,12 +27,12 @@ Git服务现在独树一帜，相比与SVN有更多的灵活性，最流行的�
 
 ### 3.配置gitblit.properties 文件
 
-1、找到Git目录下的data文件下的defaults.properties文件，“记事本”打开。
-2、找到git.repositoriesFolder(资料库路径)，赋值为第七步创建好的文件目录。
-3.找到server.httpPort，设定http协议的端口号。
-4.找到server.httpBindInterface，设定服务器的IP地址。这里就设定你的服务器IP或本地IP。
-5.找到server.httpsBindInterface，设定为localhost。
-6.保存，关闭文件。
+- 找到Git目录下的data文件下的defaults.properties文件，“记事本”打开。
+- 找到git.repositoriesFolder(资料库路径)，赋值为第七步创建好的文件目录。
+- 找到server.httpPort，设定http协议的端口号。
+- 找到server.httpBindInterface，设定服务器的IP地址。这里就设定你的服务器IP或本地IP。
+- 找到server.httpsBindInterface，设定为localhost。
+- 保存，关闭文件。
 
 ### 4.运行gitblit.cmd 批处理文件
 1、找到bitblit目录中的gitblit.cmd文件，双击。
