@@ -22,7 +22,7 @@ Git服务现在独树一帜，相比与SVN有更多的灵活性，最流行的�
 根据系统位数下载，32的下载32的，64的下载64的,下载之后配置环境变量，进入dos命令，键入java，javac查看是否
 成功配置。
 ### 2.下载Gitblit.下载地址：[http://www.gitblit.com/](http://www.gitblit.com/)
-
+![](https://cl.ly/2721d366d103)
 解压缩下载的压缩包即可，无需安装。
 
 ### 3.配置gitblit.properties 文件
