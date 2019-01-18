@@ -1,107 +1,43 @@
 ---
 layout:     post
-title:      从一道网易面试题浅谈 Tagged Pointer
-subtitle:   浅谈 Tagged Pointer
-date:       2017-12-26
-author:     BY
+title:      Windows下搭建Git服务器
+subtitle:   一起来看看怎么搭建一个git服务器吧
+date:       2019-1-18
+author:     abiao
 header-img: img/post-bg-universe.jpg
 catalog: true
 tags:
-    - iOS
+    - git
 ---
 
 
 ## 前言
 
-这篇博客九月就想写了，因为赶项目拖了到现在，抓住17年尾巴写吧~
+Git没有客户端服务器端的概念，但是要共享Git仓库，就需要用到SSH协议（FTP , HTTPS , SFTP等协议也能实现Git共享，此文档不讨论），但是SSH有客户端服务器端，所以在windows下的开发要把自己的Git仓库共享出去的话，就必 须做SSH服务器
+Git服务现在独树一帜，相比与SVN有更多的灵活性，最流行的开源项目托管网站Github上面，如果托管开源项目，那么就是免费使用的，但是闭源的项目就会收取昂贵的费用，如果你不缺$，那么不在本文讨论的范围内，既然这样，我们可以自己搭建我们的Git服务器。
+国内使用Windows Server平台的用户占大多数，那么本文就来讨论如何在Windows平台下搭建Git服务器。
 
 
-## 正文
+## 1.下载Java，下载地址 http://www.java.com/zh_CN/
+根据系统位数下载，32的下载32的，64的下载64的,下载之后配置环境变量，进入dos命令，键入java，javac查看是否
+成功配置。
+### 2.下载Gitblit.下载地址：http://www.gitblit.com/
 
-上次看了一篇 [《从一道网易面试题浅谈OC线程安全》](https://www.jianshu.com/p/cec2a41aa0e7) 的博客，主要内容是：
+解压缩下载的压缩包即可，无需安装。
 
-作者去网易面试，面试官出了一道面试题：下面代码会发生什么问题？
+### 3.配置gitblit.properties 文件
 
-```objc
-@property (nonatomic, strong) NSString *target;
-//....
-dispatch_queue_t queue = dispatch_queue_create("parallel", DISPATCH_QUEUE_CONCURRENT);
-for (int i = 0; i < 1000000 ; i++) {
-    dispatch_async(queue, ^{
-        self.target = [NSString stringWithFormat:@"ksddkjalkjd%d",i];
-    });
-}
-```
+1、找到Git目录下的data文件下的defaults.properties文件，“记事本”打开。
+2、找到git.repositoriesFolder(资料库路径)，赋值为第七步创建好的文件目录。
+3.找到server.httpPort，设定http协议的端口号。
+4.找到server.httpBindInterface，设定服务器的IP地址。这里就设定你的服务器IP或本地IP。
+5.找到server.httpsBindInterface，设定为localhost。
+6.保存，关闭文件。
 
-答案是：会 crash。
+### 4.运行gitblit.cmd 批处理文件
+1、找到bitblit目录中的gitblit.cmd文件，双击。
+2.运行结果如下，运行成功。
 
-我们来看看对`target`属性（`strong`修饰）进行赋值，相当与 MRC 中的
+### 5.在浏览器中打开,现在就可以使用GitBlit了
 
-```
-- (void)setTarget:(NSString *)target {
-    if (target == _target) return;
-    id pre = _target;
-    [target retain];//1.先保留新值
-    _target = target;//2.再进行赋值
-    [pre release];//3.释放旧值
-}
-```
-
-因为在 *并行队列* `DISPATCH_QUEUE_CONCURRENT` 中*异步* `dispatch_async` 对 `target`属性进行赋值，就会导致 target 已经被 `release`了，还会执行 `release`。这就是向已释放内存对象发送消息而发生 crash 。
-
-
-### 但是
-
-我敲了这段代码，执行的时候发现并不会 crash~
-
-```objc
-@property (nonatomic, strong) NSString *target;
-dispatch_queue_t queue = dispatch_queue_create("parallel", DISPATCH_QUEUE_CONCURRENT);
-for (int i = 0; i < 1000000 ; i++) {
-    dispatch_async(queue, ^{
-    	// ‘ksddkjalkjd’删除了
-        self.target = [NSString stringWithFormat:@"%d",i];
-    });
-}
-```
-
-原因就出在对 `self.target` 赋值的字符串上。博客的最后也提到了 - *‘上述代码的字符串改短一些，就不会崩溃’*，还有 `Tagged Pointer` 这个东西。
-
-我们将上面的代码修改下：
-
-
-```objc
-NSString *str = [NSString stringWithFormat:@"%d", i];
-NSLog(@"%d, %s, %p", i, object_getClassName(str), str);
-self.target = str;
-```
-
-输出：
-
-```
-0, NSTaggedPointerString, 0x3015
-```
-
-发现这个字符串类型是 `NSTaggedPointerString`，那我们来看看 Tagged Pointer 是什么？
-
-### Tagged Pointer
-
-Tagged Pointer 详细的内容可以看这里 [深入理解Tagged Pointer](http://www.infoq.com/cn/articles/deep-understanding-of-tagged-pointer)。
-
-Tagged Pointer 是一个能够提升性能、节省内存的有趣的技术。
-
-- Tagged Pointer 专门用来存储小的对象，例如 **NSNumber** 和 **NSDate**（后来可以存储小字符串）
-- Tagged Pointer 指针的值不再是地址了，而是真正的值。所以，实际上它不再是一个对象了，它只是一个披着对象皮的普通变量而已。
-- 它的内存并不存储在堆中，也不需要 malloc 和 free，所以拥有极快的读取和创建速度。
-
-
-
-
-### 参考：
-
-- [从一道网易面试题浅谈OC线程安全](https://www.jianshu.com/p/cec2a41aa0e7)
-
-- [深入理解Tagged Pointer](http://www.infoq.com/cn/articles/deep-understanding-of-tagged-pointer)
-
-- [【译】采用Tagged Pointer的字符串](http://www.cocoachina.com/ios/20150918/13449.html)
 
