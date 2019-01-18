@@ -7,7 +7,7 @@ author:     abiao
 header-img: img/post-bg-universe.jpg
 catalog: true
 tags:
-    - git
+    - Git
 ---
 
 
