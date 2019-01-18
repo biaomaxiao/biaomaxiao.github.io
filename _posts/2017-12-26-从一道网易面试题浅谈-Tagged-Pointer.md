@@ -2,7 +2,7 @@
 layout:     post
 title:      Windows下搭建Git服务器
 subtitle:   一起来看看怎么搭建一个git服务器吧
-date:       2019-1-18
+date:       2019-01-18
 author:     abiao
 header-img: img/post-bg-universe.jpg
 catalog: true
