@@ -1,0 +1,27 @@
+---
+layout:     post
+title:      linux上图片验证码报空指针的问题
+subtitle:   Cookie和Session
+date:       2019-07-02
+author:     abiao
+header-img: img/20190702170802.png
+catalog: true
+tags:
+    - Linux
+    - docker
+---
+
+
+## 前言
+
+验证码相信大家都做过，有使用前端生成的，也有使用后端生成的。我是使用java画图和随机数生成验证码，然后
+放到缓存里，图片验证码使用流的方式显示在前端页面中，在本地环境中是非常完美的，但是使用docker部署到linux
+环境中，出现了问题-------空指针异常。
+
+
+### 解决方案
+
+我使用的是openjdk，把它改成sun jdk就可以了。因为我们开发使用的是sun jdk，openjdk源码与sun jdk是有
+区别的，它故意去掉了fontconfig这一块，所以这是一种解决方案。
+img/20190702171400.png
+
