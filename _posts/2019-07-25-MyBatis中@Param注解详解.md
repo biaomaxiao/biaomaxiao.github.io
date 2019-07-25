@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      Mybatis的@Param注解
-subtitle:   @Param注解
+title:      Mybatis的Param注解
+subtitle:   Param注解
 date:       2019-07-25
 author:     abiao
 header-img: img/1560822104796.jpg
